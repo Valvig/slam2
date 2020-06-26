@@ -1,0 +1,428 @@
+[
+  {
+    "id": 1,
+    "name": "B.F. Sword",
+    "champions": []
+  },
+  {
+    "id": 2,
+    "name": "Recurve Bow",
+    "champions": []
+  },
+  {
+    "id": 3,
+    "name": "Needlessly Large Rod",
+    "champions": [
+      "Ahri",
+      "Vi"
+    ]
+  },
+  {
+    "id": 4,
+    "name": "Tear of the Goddess",
+    "champions": [
+      "Ahri",
+      "Vi"
+    ]
+  },
+  {
+    "id": 5,
+    "name": "Chain Vest",
+    "champions": [
+      "Ahri",
+      "Vi"
+    ]
+  },
+  {
+    "id": 6,
+    "name": "Negatron Cloak",
+    "champions": [
+      "Ahri",
+      "Vi"
+    ]
+  },
+  {
+    "id": 7,
+    "name": "Giant's Belt",
+    "champions": [
+      "Ahri",
+      "Vi"
+    ]
+  },
+  {
+    "id": 8,
+    "name": "Spatula",
+    "champions": [
+      "Ahri",
+      "Vi"
+    ]
+  },
+  {
+    "id": 9,
+    "name": "Sparring Gloves",
+    "champions": [
+      "Ahri",
+      "Vi"
+    ]
+  },
+  {
+    "id": 11,
+    "name": "Deathblade",
+    "champions": [
+      "Ahri",
+      "Vi"
+    ]
+  },
+  {
+    "id": 12,
+    "name": "Giant Slayer",
+    "champions": [
+      "Ahri",
+      "Vi"
+    ]
+  },
+  {
+    "id": 13,
+    "name": "Hextech Gunblade",
+    "champions": [
+      "Ahri",
+      "Vi"
+    ]
+  },
+  {
+    "id": 14,
+    "name": "Spear of Shojin",
+    "champions": [
+      "Ahri",
+      "Vi"
+    ]
+  },
+  {
+    "id": 15,
+    "name": "Guardian Angel",
+    "champions": [
+      "Ahri",
+      "Vi"
+    ]
+  },
+  {
+    "id": 16,
+    "name": "Bloodthirster",
+    "champions": [
+      "Ahri",
+      "Vi"
+    ]
+  },
+  {
+    "id": 17,
+    "name": "Zeke's Herald",
+    "champions": [
+      "Ahri",
+      "Vi"
+    ]
+  },
+  {
+    "id": 18,
+    "name": "Blade of the Ruined King",
+    "champions": [
+      "Ahri",
+      "Vi"
+    ]
+  },
+  {
+    "id": 19,
+    "name": "Infinity Edge",
+    "champions": [
+      "Ahri",
+      "Vi"
+    ]
+  },
+  {
+    "id": 22,
+    "name": "Rapid Firecannon",
+    "champions": [
+      "Ahri",
+      "Vi"
+    ]
+  },
+  {
+    "id": 23,
+    "name": "Guinsoo's Rageblade",
+    "champions": [
+      "Ahri",
+      "Vi"
+    ]
+  },
+  {
+    "id": 24,
+    "name": "Statikk Shiv",
+    "champions": [
+      "Ahri",
+      "Vi"
+    ]
+  },
+  {
+    "id": 25,
+    "name": "Titan's Resolve",
+    "champions": [
+      "Ahri",
+      "Vi"
+    ]
+  },
+  {
+    "id": 26,
+    "name": "Runaan's Hurricane",
+    "champions": [
+      "Ahri",
+      "Vi"
+    ]
+  },
+  {
+    "id": 27,
+    "name": "Zz'Rot Portal",
+    "champions": [
+      "Ahri",
+      "Vi"
+    ]
+  },
+  {
+    "id": 28,
+    "name": "Infiltrator's Talons",
+    "champions": [
+      "Ahri",
+      "Vi"
+    ]
+  },
+  {
+    "id": 29,
+    "name": "Last Whisper",
+    "champions": [
+      "Ahri",
+      "Vi"
+    ]
+  },
+  {
+    "id": 33,
+    "name": "Rabadon's Deathcap",
+    "champions": [
+      "Ahri",
+      "Vi"
+    ]
+  },
+  {
+    "id": 34,
+    "name": "Luden's Echo",
+    "champions": [
+      "Ahri",
+      "Vi"
+    ]
+  },
+  {
+    "id": 35,
+    "name": "Locket of the Iron Solari",
+    "champions": [
+      "Ahri",
+      "Vi"
+    ]
+  },
+  {
+    "id": 36,
+    "name": "Ionic Spark",
+    "champions": [
+      "Ahri",
+      "Vi"
+    ]
+  },
+  {
+    "id": 37,
+    "name": "Morellonomicon",
+    "champions": [
+      "Ahri",
+      "Vi"
+    ]
+  },
+  {
+    "id": 38,
+    "name": "Demolitionist's Charge",
+    "champions": [
+      "Ahri",
+      "Vi"
+    ]
+  },
+  {
+    "id": 39,
+    "name": "Jeweled Gauntlet",
+    "champions": [
+      "Ahri",
+      "Vi"
+    ]
+  },
+  {
+    "id": 44,
+    "name": "Seraph's Embrace",
+    "champions": [
+      "Ahri",
+      "Vi"
+    ]
+  },
+  {
+    "id": 45,
+    "name": "Frozen Heart",
+    "champions": [
+      "Ahri",
+      "Vi"
+    ]
+  },
+  {
+    "id": 46,
+    "name": "Chalice of Favor",
+    "champions": [
+      "Ahri",
+      "Vi"
+    ]
+  },
+  {
+    "id": 47,
+    "name": "Redemption",
+    "champions": [
+      "Ahri",
+      "Vi"
+    ]
+  },
+  {
+    "id": 48,
+    "name": "Star Guardian's Charm",
+    "champions": [
+      "Ahri",
+      "Vi"
+    ]
+  },
+  {
+    "id": 49,
+    "name": "Hand Of Justice",
+    "champions": [
+      "Ahri",
+      "Vi"
+    ]
+  },
+  {
+    "id": 55,
+    "name": "Bramble Vest",
+    "champions": [
+      "Ahri",
+      "Vi"
+    ]
+  },
+  {
+    "id": 56,
+    "name": "Sword Breaker",
+    "champions": [
+      "Ahri",
+      "Vi"
+    ]
+  },
+  {
+    "id": 57,
+    "name": "Red Buff",
+    "champions": [
+      "Ahri",
+      "Vi"
+    ]
+  },
+  {
+    "id": 58,
+    "name": "Rebel Medal",
+    "champions": [
+      "Ahri",
+      "Vi"
+    ]
+  },
+  {
+    "id": 59,
+    "name": "Shroud of Stillness",
+    "champions": [
+      "Ahri",
+      "Vi"
+    ]
+  },
+  {
+    "id": 66,
+    "name": "Dragon's Claw",
+    "champions": [
+      "Ahri",
+      "Vi"
+    ]
+  },
+  {
+    "id": 67,
+    "name": "Zephyr",
+    "champions": [
+      "Ahri",
+      "Vi"
+    ]
+  },
+  {
+    "id": 68,
+    "name": "Celestial Orb",
+    "champions": [
+      "Ahri",
+      "Vi"
+    ]
+  },
+  {
+    "id": 69,
+    "name": "Quicksilver",
+    "champions": [
+      "Ahri",
+      "Vi"
+    ]
+  },
+  {
+    "id": 77,
+    "name": "Warmog's Armor",
+    "champions": [
+      "Ahri",
+      "Vi"
+    ]
+  },
+  {
+    "id": 78,
+    "name": "Protector's Chestguard",
+    "champions": [
+      "Ahri",
+      "Vi"
+    ]
+  },
+  {
+    "id": 79,
+    "name": "Trap Claw",
+    "champions": [
+      "Ahri",
+      "Vi"
+    ]
+  },
+  {
+    "id": 88,
+    "name": "Force of Nature",
+    "champions": [
+      "Ahri",
+      "Vi"
+    ]
+  },
+  {
+    "id": 89,
+    "name": "Dark Star's Heart",
+    "champions": [
+      "Ahri",
+      "Vi"
+    ]
+  },
+  {
+    "id": 99,
+    "name": "Thief's Gloves",
+    "champions": [
+      "Ahri",
+      "Vi"
+    ]
+  }
+]
