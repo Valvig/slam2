@@ -4,6 +4,8 @@ var rateLimit = require('axios-rate-limit')
 const riotApiController = require('../app/riotApi/riotApi.controller')
 const Bottleneck = require('bottleneck');
 const riotKey = require('../riotApi.json')
+const oldDatas = require('../datasUnits2.json')
+var fs = require('fs')
 
 const limiter = new Bottleneck({
   minTime: 2 * 60 * 1000 / 95 // Max requests = 100 every 2 minutes
@@ -42,13 +44,10 @@ async function getAllPuuid(playersName) {
   })
 
 
-  try {
-    const results = await Promise.all(allThePromises);
+    // const results = await Promise.all(allThePromises);
+    const tempResults = await Promise.all(allThePromises.map(p => p.catch(e => e)));
+    const results = tempResults.filter(result => !(result instanceof Error));
     puuidList = await getPuuidList(results)
-  } catch (err) {
-    console.log(err)
-  }
-
   return puuidList
 }
 
@@ -62,24 +61,22 @@ async function getAllMatchs(puuidList) {
 
   // Map over all the results and call our pretend API, stashing the promises in a new array
   const allThePromises = urlList.map(name => {
-    urlApi = "https://europe.api.riotgames.com/tft/match/v1/matches/by-puuid/" + encodeURI(name) + "/ids?count=10"
+    urlApi = "https://europe.api.riotgames.com/tft/match/v1/matches/by-puuid/" + encodeURI(name) + "/ids?count=40"
     return throttledGetMyData(urlApi)
   })
 
 
-  try {
-    const results = await Promise.all(allThePromises);
-    tempMatchList = await getMatchList(results)
+  // const results = await Promise.all(allThePromises);
+  const tempResults = await Promise.all(allThePromises.map(p => p.catch(e => e)));
+  const results = tempResults.filter(result => !(result instanceof Error));
+  tempMatchList = await getMatchList(results)
 
-    for (i = 0; i < tempMatchList.length; i++) {
-      for (let j = 0; j < tempMatchList[i].length; j++) {
-        if (!matchList.includes(tempMatchList[i][j])) {
-          matchList.push(tempMatchList[i][j])
-        }
+  for (i = 0; i < tempMatchList.length; i++) {
+    for (let j = 0; j < tempMatchList[i].length; j++) {
+      if (!matchList.includes(tempMatchList[i][j])) {
+        matchList.push(tempMatchList[i][j])
       }
     }
-  } catch (err) {
-    console.log(err)
   }
 
   return matchList
@@ -99,13 +96,11 @@ async function getAllMatchsInfos(matchsList) {
     return throttledGetMyData(urlApi)
   })
 
+  // const results = await Promise.all(allThePromises);
+  const tempResults = await Promise.all(allThePromises.map(p => p.catch(e => e)));
+  const results = tempResults.filter(result => !(result instanceof Error));
+  matchInfos = await getMatchInfosList(results)
 
-  try {
-    const results = await Promise.all(allThePromises);
-    matchInfos = await getMatchInfosList(results)
-  } catch (err) {
-    console.log(err)
-  }
 
   return matchInfos
 }
@@ -161,6 +156,15 @@ async function useMatchInfos(matchInfos) {
 
   console.log(JSON.stringify(unitsInfos))
 
+  fs.open('datasTest.json', 'w', function (err, file) {
+    if (err) throw err;
+    console.log('Open!');
+  })
+
+  fs.writeFile('datasTest.json', JSON.stringify(unitsInfos), function (err) {
+    if (err) throw err;
+    console.log('Saved!');
+  })
   return unitsInfos
 }
 
@@ -219,7 +223,17 @@ function addToList(unitsInfos, units) {
     tempData.averageNbItems = units.items.length
     tempData.items = []
     for (i = 0; i < units.items.length; i++) {
-      if (units.items[i] != 99) {
+      var addItem = true
+
+      for (let j = 0; j < tempData.items.length; j++) {
+        if (tempData.items[j].name == units.items[i].name) {
+          tempData.items[j].occurence += 1
+          addItem = false
+          break
+        }
+      }
+
+      if (units.items[i] != 999 && addItem == true) {
         tempData.items.push({
           name: units.items[i],
           occurence: 1
@@ -247,12 +261,10 @@ async function getBestPlayers() {
   })
 
 
-  try {
-    const results = await Promise.all(allThePromises);
+    // const results = await Promise.all(allThePromises)
+    const tempResults = await Promise.all(allThePromises.map(p => p.catch(e => e)));
+    const results = tempResults.filter(result => !(result instanceof Error));
     bestPlayers = await getBestPlayersList(results)
-  } catch (err) {
-    console.log(err)
-  }
 
   return bestPlayers
 }
@@ -270,6 +282,72 @@ async function getBestPlayersList(results) {
   return bestPlayersList
 }
 
+async function getCarrys(unitsInfos) {
+  var carrys = []
+  var others = []
+  const averageOccurence = await getAverageOccurence(unitsInfos)
+  for (let i = 0; i < unitsInfos.length; i++) {
+    if (unitsInfos[i].occurence > averageOccurence && unitsInfos[i].averageNbItems > 2) {
+      carrys.push(unitsInfos[i])
+    } else {
+      others.push(unitsInfos[i])
+    }
+  }
+
+  return carrys
+}
+
+async function getAverageOccurence(unitsInfos) {
+  var occurence = 0
+  var count = 0
+
+  for (let i = 0; i < unitsInfos.length; i++) {
+    count += 1
+    occurence += unitsInfos[i].occurence
+  }
+
+  return occurence / count
+}
+
+async function getBestItems(units) {
+  var newCarrysInfos = []
+  for (let i = 0; i < units.length; i++) {
+    var index0 = 0
+    var occurence0 = 0
+    var index1 = 0
+    var occurence1 = 0
+    var index2 = 0
+    var occurence2 = 0
+    for (let j = 0; j < units[i].items.length; j++) {
+      if (units[i].items[j].occurence > occurence0) {
+        occurence0 = units[i].items[j].occurence
+        index0 = j
+      } else if (units[i].items[j].occurence > occurence1 || units[i].items[j].occurence == occurence0) {
+        occurence1 = units[i].items[j].occurence
+        index1 = j
+      } else if (units[i].items[j].occurence > occurence2 || units[i].items[j].occurence == occurence1) {
+        occurence2 = units[i].items[j].occurence
+        index2 = j
+      }
+    }
+
+    var tempData = {}
+    tempData.champ = units[i].champ
+    tempData.occurence = units[i].occurence
+    tempData.averageNbItems = units[i].averageNbItems
+    tempData.items = []
+    for (let k = 0; k < units[i].items.length; k++) {
+      if (k == index0 || k == index1 || k == index2) {
+        tempData.items.push(units[i].items[k])
+      }
+    }
+
+    newCarrysInfos.push(tempData)
+  }
+
+  console.log(JSON.stringify(newCarrysInfos))
+}
+
 
 
 module.exports = {
@@ -279,7 +357,7 @@ module.exports = {
     console.log("Test 2")
 
     // FOR TEST ONLY
-    playersName = playersName.slice(0, 20)
+    playersName = playersName.slice(0, 200)
     console.log("playersName.length = " + playersName.length)
     // FOR TEST ONLY
 
@@ -294,5 +372,12 @@ module.exports = {
 
     const matchInfosValues = await useMatchInfos(matchsInfosList)
     console.log("Test 6")
+
+    const carrys = await getCarrys(matchInfosValues)
+    console.log("Test 7")
+    // const carrys = await getCarrys(oldDatas)
+    // console.log("Test 7")
+    const bestItems = await getBestItems(carrys)
+    console.log("Test 8")
   }
 }
