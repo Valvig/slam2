@@ -4,205 +4,208 @@
       <div :class="'price ' + getClassPrice(championObject) ">
         {{championObject.cost}}
       </div>
-      <img class="champion" :src="getImgUrlChampion(championObject.name)"/>
+      <img class="champion" :src="getImgUrlChampion(championObject.name)" />
     </div>
-    
+
     <div class="bestItems">
-      <div class="itemCol" v-for="item in bestItems" :key="item" >
-        <img class ="item" :src="getImgUrlItems(item.name)"/>
+      <div class="itemCol" v-for="item in bestItems" :key="item">
+        <img class="item" :src="getImgUrlItems(item.name)" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-
 export default {
-  name: 'champion-card',
+  name: "champion-card",
   props: {
     championObject: Object
   },
   data() {
     return {
+      loading: true,
       bestItems: [],
       items: this.$store.state.itemsList,
       champions: this.$store.state.championsList
-    }
+    };
   },
-  methods : {
-    getBestItems (name) {
-      var itemToPush
-
-      this.champions.forEach(champion => {
-        if (name == champion.name) {
-          this.getChampItems(champion).forEach(item => {
-            itemToPush = this.getItemByName(item)
-            this.bestItems.push(itemToPush)
-          })
-        }
-      })
+  methods: {
+    getBestItems() {
+      var bestItemsForChamp = []
+      var itemsChamp = this.championObject.items.split(";");
+      console.log(itemsChamp.length)
+      for (let i = 0; i < itemsChamp.length; i++) {
+        // Get item as JSON
+        var itemValue = JSON.parse(itemsChamp[i])
+        bestItemsForChamp.push(itemValue)
+        console.log(itemValue.name)
+      }
+    
+      return bestItemsForChamp
     },
-    getItemByName (name) {
-      var itemTemp
+    getItemByName(name) {
+      var itemTemp;
 
       this.items.forEach(item => {
         if (name == item.name) {
-          itemTemp = item
+          itemTemp = item;
         }
-      })
+      });
 
-      return itemTemp
+      return itemTemp;
     },
     getImgUrlItems(name) {
-      var normalizedName = ""
+      var normalizedName = "";
 
       this.bestItems.forEach(item => {
-        if(item.name === name){
-          if (item.iditems <= 9) {
-            normalizedName = "0" + item.iditems + ".png"
+        if (item.name === name) {
+          if (item.name <= 9) {
+            normalizedName = "0" + item.name + ".png";
           } else {
-            normalizedName = item.iditems + ".png"
+            normalizedName = item.name + ".png";
           }
         }
       })
 
-      return require('@/assets/set3EN/items/' + normalizedName)
-    },
-    getImgUrlChampion (name) {
-      var normalizedName = name.replace(" ", "")
-      normalizedName = normalizedName.replace("'", "")
-      normalizedName = normalizedName.toLowerCase()
-      normalizedName = normalizedName + ".png"
-      
-      return require('@/assets/set3EN/champions/' + normalizedName)
-    },
-    getClassChamp (champ) {
-      switch (champ.cost) {
-        case 1:
-          return "greyBorder"
-        case 2:
-          return "blueBorder"
-        case 3:
-          return "greenBorder"
-        case 4:
-          return "purpleBorder"
-        case 5:
-          return "yellowBorder"
-        default:
-          return "greyBorder"
-      }
-    },
-    getClassPrice (champ) {
-      switch (champ.cost) {
-        case 1:
-          return "greyBackground"
-        case 2:
-          return "blueBackground"
-        case 3:
-          return "greenBackground"
-        case 4:
-          return "purpleBackground"
-        case 5:
-          return "yellowBackground"
-        default:
-          return "greyBackground"
-      }
-    },
-    getChampItems (champion) {
-      var res = champion.items.split(";")
+      console.log(normalizedName)
 
-      return res
+      return require("@/assets/set3update/items/" + normalizedName);
+    },
+    getImgUrlChampion(name) {
+      var normalizedName = name.replace(" ", "");
+      normalizedName = normalizedName.replace("'", "");
+      normalizedName = normalizedName.toLowerCase();
+
+      // Delete "TFT3_" to the name
+      normalizedName = normalizedName.substr(5);
+
+      // Add PNG extension to get the file
+      normalizedName = normalizedName + ".png";
+
+      return require("@/assets/set3update/champions/" + normalizedName);
+    },
+    getClassChamp(champ) {
+      switch (champ.cost) {
+        case 1:
+          return "greyBorder";
+        case 2:
+          return "blueBorder";
+        case 3:
+          return "greenBorder";
+        case 4:
+          return "purpleBorder";
+        case 5:
+          return "yellowBorder";
+        default:
+          return "greyBorder";
+      }
+    },
+    getClassPrice(champ) {
+      switch (champ.cost) {
+        case 1:
+          return "greyBackground";
+        case 2:
+          return "blueBackground";
+        case 3:
+          return "greenBackground";
+        case 4:
+          return "purpleBackground";
+        case 5:
+          return "yellowBackground";
+        default:
+          return "greyBackground";
+      }
     }
   },
-  mounted () {
-    this.getBestItems(this.championObject.name)
+  mounted() {
+    this.bestItems = this.getBestItems()
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
-  $heightChamp:100px;
-  $heightItems:$heightChamp/3;
+$heightChamp: 100px;
+$heightItems: $heightChamp/3;
 
-  $borderChampSize: 4px;
+$borderChampSize: 4px;
 
-  .possibleChamp {
-    height: $heightChamp;
-    width: $heightChamp;
+.possibleChamp {
+  height: $heightChamp;
+  width: $heightChamp;
+  position: relative;
+}
+
+.champion {
+  height: 100%;
+  width: 100%;
+}
+
+.bestItems {
+  height: $heightItems;
+  width: $heightChamp;
+  display: flex;
+  flex-wrap: wrap;
+
+  .itemCol {
     position: relative;
-  }
-
-  .champion {
     height: 100%;
-    width: 100%;
+    width: $heightItems;
   }
 
-  .bestItems {
-    height: $heightItems;
-    width: $heightChamp;
-    display: flex;
-    flex-wrap: wrap;
+  .item {
+    height: 100%;
+  }
+}
 
-    .itemCol{
-      position: relative;
-      height: 100%;
-      width: $heightItems;
-    }
+.blueBorder {
+  border: $borderChampSize solid blue;
+}
 
-    .item {
-      height: 100%;
-    }
-  }
+.greenBorder {
+  border: $borderChampSize solid green;
+}
 
-  .blueBorder {
-    border: $borderChampSize solid blue;
-  }
+.greyBorder {
+  border: $borderChampSize solid grey;
+}
 
-  .greenBorder {
-    border: $borderChampSize solid green;
-  }
-  
-  .greyBorder {
-    border: $borderChampSize solid grey;
-  }
-  
-  .purpleBorder {
-    border: $borderChampSize solid purple;
-  }
-  
-  .yellowBorder {
-    border: $borderChampSize solid yellow;
-  }
+.purpleBorder {
+  border: $borderChampSize solid purple;
+}
 
-  .blueBackground {
-    background: blue;
-  }
+.yellowBorder {
+  border: $borderChampSize solid yellow;
+}
 
-  .greenBackground {
-    background: green;
-  }
-  
-  .greyBackground {
-    background: grey;
-  }
-  
-  .purpleBackground {
-    background: purple;
-  }
-  
-  .yellowBackground {
-    background: yellow;
-    color: black !important;
-  }
+.blueBackground {
+  background: blue;
+}
 
-  .price {
-    position: absolute;
-    right: - $borderChampSize / 2;
-    bottom: - $borderChampSize / 2;
-    width: $heightChamp / 5;
-    height: $heightChamp / 5;
-    text-align: center;
-    color: white;
-    font-weight: bold;
-  }
+.greenBackground {
+  background: green;
+}
+
+.greyBackground {
+  background: grey;
+}
+
+.purpleBackground {
+  background: purple;
+}
+
+.yellowBackground {
+  background: yellow;
+  color: black !important;
+}
+
+.price {
+  position: absolute;
+  right: -$borderChampSize / 2;
+  bottom: -$borderChampSize / 2;
+  width: $heightChamp / 5;
+  height: $heightChamp / 5;
+  text-align: center;
+  color: white;
+  font-weight: bold;
+}
 </style>

@@ -1,10 +1,10 @@
 var _ = require("lodash")
 var axios = require("axios")
-var rateLimit = require('axios-rate-limit')
-const riotApiController = require('../app/riotApi/riotApi.controller')
-const Bottleneck = require('bottleneck');
+const Bottleneck = require('bottleneck')
 const riotKey = require('../riotApi.json')
-const oldDatas = require('../datasUnits2.json')
+const oldDatas = require('../datasTest.json')
+const champs = require('./champions.json')
+const itemsJson = require('./items.json')
 var fs = require('fs')
 
 const limiter = new Bottleneck({
@@ -44,10 +44,10 @@ async function getAllPuuid(playersName) {
   })
 
 
-    // const results = await Promise.all(allThePromises);
-    const tempResults = await Promise.all(allThePromises.map(p => p.catch(e => e)));
-    const results = tempResults.filter(result => !(result instanceof Error));
-    puuidList = await getPuuidList(results)
+  // const results = await Promise.all(allThePromises);
+  const tempResults = await Promise.all(allThePromises.map(p => p.catch(e => e)));
+  const results = tempResults.filter(result => !(result instanceof Error));
+  puuidList = await getPuuidList(results)
   return puuidList
 }
 
@@ -261,10 +261,10 @@ async function getBestPlayers() {
   })
 
 
-    // const results = await Promise.all(allThePromises)
-    const tempResults = await Promise.all(allThePromises.map(p => p.catch(e => e)));
-    const results = tempResults.filter(result => !(result instanceof Error));
-    bestPlayers = await getBestPlayersList(results)
+  // const results = await Promise.all(allThePromises)
+  const tempResults = await Promise.all(allThePromises.map(p => p.catch(e => e)));
+  const results = tempResults.filter(result => !(result instanceof Error));
+  bestPlayers = await getBestPlayersList(results)
 
   return bestPlayers
 }
@@ -282,19 +282,28 @@ async function getBestPlayersList(results) {
   return bestPlayersList
 }
 
-async function getCarrys(unitsInfos) {
+async function getCarrysUsefulAndOthers(unitsInfos) {
   var carrys = []
+  var useful = []
   var others = []
   const averageOccurence = await getAverageOccurence(unitsInfos)
   for (let i = 0; i < unitsInfos.length; i++) {
-    if (unitsInfos[i].occurence > averageOccurence && unitsInfos[i].averageNbItems > 2) {
+    if (unitsInfos[i].occurence > averageOccurence && unitsInfos[i].averageNbItems > 1.5) {
       carrys.push(unitsInfos[i])
+    } else if (unitsInfos[i].averageNbItems > 1.5 || unitsInfos[i].occurence > averageOccurence) {
+      useful.push(unitsInfos[i])
     } else {
       others.push(unitsInfos[i])
     }
   }
 
-  return carrys
+  var allChamps = []
+
+  allChamps.push(carrys)
+  allChamps.push(useful)
+  allChamps.push(others)
+
+  return allChamps
 }
 
 async function getAverageOccurence(unitsInfos) {
@@ -345,13 +354,60 @@ async function getBestItems(units) {
     newCarrysInfos.push(tempData)
   }
 
-  console.log(JSON.stringify(newCarrysInfos))
+  return newCarrysInfos
+}
+
+function updateDatabase(units, carryBool) {
+  for (let i = 0; i < units.length; i++) {
+    itemsString = ""
+    for (let j = 0; j < units[i].items.length; j++) {
+      if (j == 0) {
+        itemsString = JSON.stringify(units[i].items[j])
+      } else {
+        itemsString = itemsString + ";" + JSON.stringify(units[i].items[j])
+      }
+    }
+
+    console.log(carryBool)
+    axios.create({
+        baseURL: `http://localhost:8081/api`,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Headers': '*'
+        }
+      })
+      .put('/champions/' + units[i].champ, {
+        carry: carryBool,
+        items: itemsString,
+        averageNbItems: units[i].averageNbItems,
+        occurence: units[i].occurence
+      })
+  }
+}
+
+function createItemsInDB() {
+  for (let i = 0; i < itemsJson.length; i++) {
+    if (itemsJson[i].length == 1) {
+      itemsJson[i] = '0' + itemsJson[i]
+    }
+    axios.create({
+        baseURL: `http://localhost:8081/api`,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Headers': '*'
+        }
+      })
+      .post('/items', {
+        name: itemsJson[i].name,
+        id: itemsJson[i].id
+      })
+  }
 }
 
 
 
 module.exports = {
-  test: async function (req, res) {
+  getNewDatas: async function (req, res) {
     console.log("Test 1")
     var playersName = await getBestPlayers()
     console.log("Test 2")
@@ -373,11 +429,29 @@ module.exports = {
     const matchInfosValues = await useMatchInfos(matchsInfosList)
     console.log("Test 6")
 
-    const carrys = await getCarrys(matchInfosValues)
+    const carrysUsefulAndOthers = await getCarrysUsefulAndOthers(matchInfosValues)
     console.log("Test 7")
-    // const carrys = await getCarrys(oldDatas)
-    // console.log("Test 7")
-    const bestItems = await getBestItems(carrys)
+    const bestItems = await getBestItems(carrysUsefulAndOthers[0])
     console.log("Test 8")
+  },
+
+  workWithOldDatas: async function (req, res) {
+    // const carrysUsefulAndOthers = await getCarrysUsefulAndOthers(oldDatas)
+    // console.log("Test 1")
+    // const bestItemsCarrys = await getBestItems(carrysUsefulAndOthers[0])
+    // const bestItemsUseful = await getBestItems(carrysUsefulAndOthers[1])
+    // const bestItemsOthers = await getBestItems(carrysUsefulAndOthers[2])
+
+    // console.log("Test 2")
+
+    // console.log(bestItemsCarrys)
+
+    // updateDatabase(bestItemsCarrys, 0)
+    // updateDatabase(bestItemsUseful, 1)
+    // updateDatabase(bestItemsOthers, 2)
+
+    // console.log("Test 3")
+
+    // createItemsInDB()
   }
 }

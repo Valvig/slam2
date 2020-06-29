@@ -53,15 +53,11 @@ export default {
     return temp
   },
   async getGMList() {
-    console.log("getGMList")
     const temp = await Api()
       .get('/riot/getGM')
       .then(function (res) {
-        console.log("res = " + res)
         return res
       })
-      
-    console.log("return getGMList")
     return temp
   },
   async getPuuidByName (namePlayer) {

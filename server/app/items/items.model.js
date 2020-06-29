@@ -4,6 +4,7 @@ var dbConn = require('../config/config');
 //Employee object create
 var Item = function (item) {
   this.name = item.name;
+  this.id = item.id;
 };
 
 Item.create = function (newItem, result) {

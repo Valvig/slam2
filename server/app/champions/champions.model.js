@@ -6,8 +6,10 @@ var Champion = function (champion) {
   this.name = champion.name;
   this.cost = champion.cost;
   this.traits = champion.traits;
-  this.items = champion.items;
   this.carry = champion.carry;
+  this.items = champion.items;
+  this.averageNbItems = champion.averageNbItems;
+  this.occurence = champion.occurence;
 };
 
 Champion.create = function (newEmp, result) {
@@ -44,7 +46,8 @@ Champion.findAll = function (result) {
 };
 
 Champion.update = function (name, champion, result) {
-  dbConn.query("UPDATE champions SET items=?,carry=? WHERE name = ?", [champion.items, champion.carry, name], function (err, res) {
+  console.log(champion)
+  dbConn.query("UPDATE champions SET items=?,carry=?,averageNbItems=?,occurence=? WHERE name = ?", [champion.items, champion.carry, champion.averageNbItems, champion.occurence, name], function (err, res) {
     if (err) {
       console.log("error: ", err);
       result(null, err);

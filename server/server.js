@@ -62,5 +62,7 @@ app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
 
-run.test()
+// TEST ONLY
+run.workWithOldDatas()
+// run.test()
 

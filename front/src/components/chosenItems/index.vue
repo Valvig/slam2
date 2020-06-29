@@ -8,7 +8,7 @@
         <img class="cross" v-on:click="deleteItem(item)" src="@/assets/cross.svg" alt="delete item">
         <img
           class="itemImg"
-          :src="getImgUrlItems(item.iditems)" v-bind:alt="item.name"
+          :src="getImgUrlItems(item.id)" v-bind:alt="item.name"
         >
       </div>
     </div>
@@ -18,7 +18,7 @@
         <img class="cross" v-on:click="deleteFullItem(fullItem)" src="@/assets/cross.svg" alt="delete item">
         <img
           class="itemImg"
-          :src="getImgUrlItems(fullItem.iditems)" v-bind:alt="fullItem.name"
+          :src="getImgUrlItems(fullItem.id)" v-bind:alt="fullItem.name"
         >
       </div>
     </div>
@@ -32,12 +32,11 @@ export default {
   name: 'chosen-items',
   methods : {
     getImgUrlItems (id) {
-      console.log("ID = " + id)
       var normalizedName = ""
 
       normalizedName = id <= 9 ? id = "0" + id + ".png" : id = id + ".png" 
 
-      return require('@/assets/set3EN/items/' + normalizedName)
+      return require('@/assets/set3update/items/' + normalizedName)
     },
     deleteItem(item){
       this.$store.commit('deleteItem', item)
