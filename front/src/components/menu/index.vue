@@ -1,26 +1,29 @@
 <template>
-  <v-app-bar
-    color="deep-purple accent-4"
-    dense
-    dark
-  >
-    <v-spacer></v-spacer>
-    <v-toolbar-title>Slamming</v-toolbar-title>
+  <v-app-bar dense class="menu-app">
+    <img class="logo" src="@/assets/logo/tactipWhite.svg" alt="delete item" />
     <v-spacer></v-spacer>
   </v-app-bar>
 </template>
 
 <script>
-
 export default {
-  name: 'menu',
+  name: "menu-app",
   data() {
-    return {
-    }
+    return {};
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
-</style>
+.menu-app {
+  background-color: #4d5061 !important;
+}
 
+.menu-text {
+  color: #f8f0fb;
+}
+
+.logo {
+  height: 60%;
+}
+</style>

@@ -61,7 +61,7 @@ async function getAllMatchs(puuidList) {
 
   // Map over all the results and call our pretend API, stashing the promises in a new array
   const allThePromises = urlList.map(name => {
-    urlApi = "https://europe.api.riotgames.com/tft/match/v1/matches/by-puuid/" + encodeURI(name) + "/ids?count=40"
+    urlApi = "https://europe.api.riotgames.com/tft/match/v1/matches/by-puuid/" + encodeURI(name) + "/ids?count=30"
     return throttledGetMyData(urlApi)
   })
 
@@ -165,6 +165,7 @@ async function useMatchInfos(matchInfos) {
     if (err) throw err;
     console.log('Saved!');
   })
+
   return unitsInfos
 }
 
@@ -413,7 +414,7 @@ module.exports = {
     console.log("Test 2")
 
     // FOR TEST ONLY
-    playersName = playersName.slice(0, 200)
+    // playersName = playersName.slice(0, 200)
     console.log("playersName.length = " + playersName.length)
     // FOR TEST ONLY
 

@@ -8,7 +8,7 @@
     </div>
 
     <div class="bestItems">
-      <div class="itemCol" v-for="item in bestItems" :key="item">
+      <div class="itemCol" v-for="item in bestItems" :key="item.name +'_'+getRandomNumber()">
         <img class="item" :src="getImgUrlItems(item.name)" />
       </div>
     </div>
@@ -33,12 +33,10 @@ export default {
     getBestItems() {
       var bestItemsForChamp = []
       var itemsChamp = this.championObject.items.split(";");
-      console.log(itemsChamp.length)
       for (let i = 0; i < itemsChamp.length; i++) {
         // Get item as JSON
         var itemValue = JSON.parse(itemsChamp[i])
         bestItemsForChamp.push(itemValue)
-        console.log(itemValue.name)
       }
     
       return bestItemsForChamp
@@ -66,8 +64,6 @@ export default {
           }
         }
       })
-
-      console.log(normalizedName)
 
       return require("@/assets/set3update/items/" + normalizedName);
     },
@@ -115,6 +111,9 @@ export default {
         default:
           return "greyBackground";
       }
+    },
+    getRandomNumber() {
+      return Math.floor(Math.random() * 1000);
     }
   },
   mounted() {
@@ -124,10 +123,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$heightChamp: 100px;
+$heightChamp: 72px;
 $heightItems: $heightChamp/3;
 
-$borderChampSize: 4px;
+$borderChampSize: 2px;
 
 .possibleChamp {
   height: $heightChamp;
@@ -207,5 +206,6 @@ $borderChampSize: 4px;
   text-align: center;
   color: white;
   font-weight: bold;
+  font-size: 0.75em;
 }
 </style>

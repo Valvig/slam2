@@ -1,18 +1,14 @@
 <template>
-  <div>
-    ADS
-  </div>
+  <div></div>
 </template>
 
 <script>
-
 export default {
-  name: 'ads',
+  name: "ads",
   data() {
-    return {
-    }
+    return {};
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

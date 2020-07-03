@@ -1,6 +1,6 @@
 <template>
   <v-app v-if="!loading" id="app">
-    <menuSlamming />
+    <menuApp />
     <v-container class="app-container">
       <!-- LEFT ADS -->
       <ads class="ads" />
@@ -15,6 +15,8 @@
       <!-- RIGHT ADS -->
       <ads class="ads" />
     </v-container>
+
+    <footerApp class="footer" />
   </v-app>
 </template>
 
@@ -24,7 +26,8 @@ import itemsCard from "@/components/itemsCard";
 import chosenItems from "@/components/chosenItems";
 import itemsToChoose from "@/components/itemsToChoose";
 import ads from "@/components/ads";
-import menuSlamming from "@/components/menu";
+import menuApp from "@/components/menu";
+import footerApp from "@/components/footer";
 
 import APIRoutes from "@/services/APIRoutes";
 
@@ -35,7 +38,8 @@ export default {
     chosenItems,
     itemsToChoose,
     ads,
-    menuSlamming
+    menuApp,
+    footerApp
   },
   data() {
     return {
@@ -66,14 +70,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import url('https://fonts.googleapis.com/css2?family=Catamaran:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
 #app,
 .app-container {
   width: 100%;
   height: 100%;
   max-width: 100%;
   max-height: 100%;
-  background: #161326;
-  color: #f9dbbd;
+  color: #F8F0FB;
+  background-color: #24252E;
+  font-family: 'Catamaran', sans-serif;
 }
 
 .app-container {
@@ -82,21 +89,19 @@ export default {
   padding: 0px !important;
 }
 
-.middle-container {
-  width: 80%;
-  background: blue;
-}
-
 .ads {
   position: relative;
   height: 100%;
   width: 10%;
 }
 
+.middle-container {
+  width: 100%;
+}
+
 .itemToChoose {
   position: relative;
   height: 20vh;
-  background: grey;
 }
 
 .chosenItems,
@@ -113,11 +118,37 @@ export default {
   min-height: 55vh;
 }
 
-.chosenItems {
-  background: yellow;
+.itemToChoose,
+.chosenItems,
+.itemsCard {
+  background-color: #30323d;
 }
 
-.itemsCard {
-  background: red;
+.footer {
+  background-color: #4d5061;
+}
+
+@media (min-width: 576px) {
+  .app-container {
+    max-width: 540px;
+  }
+}
+
+@media (min-width: 768px) {
+  .app-container {
+    max-width: 720px;
+  }
+}
+
+@media (min-width: 992px) {
+  .app-container {
+    max-width: 960px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .app-container {
+    max-width: 1140px;
+  }
 }
 </style>

@@ -1,8 +1,8 @@
 <template>
   <div>
-    <v-container v-for="item in possibleItems" :key="item" fluid>
+    <v-container v-for="item in possibleItems" :key="item.name + 'possibleItem'" fluid>
       <v-row>
-        <v-col>
+        <v-col class="item-col">
           <div class="item-container">
             <div class="possibleItem">
               <v-img
@@ -29,33 +29,56 @@
                 v-bind:alt="item.item2"
               ></v-img>
             </div>
+            <div class="item-name-container">
+              <div class="center-text">
+                <p class="item-name">{{item.name}}</p>
+              </div>
+            </div>
+            <v-spacer></v-spacer>
             <div class="btn-container">
               <v-btn class="slamBtn" v-on:click="slamItem(item, item.item1, item.item2)">Slam Item</v-btn>
             </div>
+          </div>
+          <div>
+            <p>
+              (Click on a champ to save it with item)
+            </p>
           </div>
         </v-col>
       </v-row>
       <v-row>
         <v-col>
-          Carry
+          <p>S TIER</p>
           <div class="carrys-container">
-            <v-container class="carrys" v-for="champion in getChampForItem(item,0)" :key="champion">
+            <v-container
+              class="carrys"
+              v-for="champion in getChampForItem(item,0)"
+              :key="champion.name"
+            >
               <champion-card class="champion-card" :championObject="champion" />
             </v-container>
           </div>
         </v-col>
         <v-col>
-          Useful
+          <p>A TIER</p>
           <div class="useful-container">
-            <v-container class="useful" v-for="champion in getChampForItem(item,1)" :key="champion">
+            <v-container
+              class="useful"
+              v-for="champion in getChampForItem(item,1)"
+              :key="champion.name"
+            >
               <champion-card class="champion-card" :championObject="champion" />
             </v-container>
           </div>
         </v-col>
         <v-col>
-          Others
+          <p>OTHERS</p>
           <div class="others-container">
-            <v-container class="others" v-for="champion in getChampForItem(item,2)" :key="champion">
+            <v-container
+              class="others"
+              v-for="champion in getChampForItem(item,2)"
+              :key="champion.name"
+            >
               <champion-card class="champion-card" :championObject="champion" />
             </v-container>
           </div>
@@ -87,6 +110,7 @@ export default {
   watch: {
     itemsSelected() {
       this.getPossibleItems();
+      this.sortPossibleItems();
     }
   },
   computed: {
@@ -107,7 +131,7 @@ export default {
         const item1 = items[i].name;
         for (let j = 1; j < items.length; j++) {
           if (i !== j) {
-            const item2 = items[j].name
+            const item2 = items[j].name;
             switch (item1) {
               case "B.F. Sword":
                 switch (item2) {
@@ -463,62 +487,166 @@ export default {
 
       this.$store.commit("addFullItem", item);
     },
+    checkIfChampionIsAlreadyPushed(arr, champion) {
+      var add = false;
+      for (let i = 0; i < arr.length; i++) {
+        if (arr[i].name === champion.name) {
+          add = true;
+          break;
+        }
+      }
+      return add;
+    },
     getChampForItem(item, carrysUsefulOrOthers) {
-      var carrys = []
-      var useful = []
-      var others = []
+      var carrys = [];
+      var useful = [];
+      var others = [];
+
+      var that = this;
 
       _.forEach(this.champions, function(champion) {
-        let itemsChamp = champion.items
+        let itemsChamp = champion.items;
         itemsChamp = itemsChamp.split(";");
         for (let i = 0; i < itemsChamp.length; i++) {
           // Get item as JSON
-          var itemChamp = JSON.parse(itemsChamp[i])
+          var itemChamp = JSON.parse(itemsChamp[i]);
 
           // If itemChamp has the same number as the item we are looking for then add it to the list
           if (itemChamp.name == item.id) {
             switch (champion.carry) {
               case 0:
-                carrys.push(champion)
-                break
+                if (!that.checkIfChampionIsAlreadyPushed(carrys, champion)) {
+                  carrys.push(champion);
+                }
+                break;
               case 1:
-                useful.push(champion)
-                break
+                if (!that.checkIfChampionIsAlreadyPushed(useful, champion)) {
+                  useful.push(champion);
+                }
+                break;
               case 2:
-                others.push(champion)
-                break
+                if (!that.checkIfChampionIsAlreadyPushed(others, champion)) {
+                  others.push(champion);
+                }
+                break;
             }
           }
         }
-      })
+      });
 
       if (carrysUsefulOrOthers == 0) {
-        return carrys
+        return carrys;
       } else if (carrysUsefulOrOthers == 1) {
-        return useful
+        return useful;
       } else {
-        return others
+        return others;
       }
+    },
+    sortPossibleItems() {
+      var itemsList = [];
+      for (let i = 0; i < this.possibleItems.length; i++) {
+        var tempObj = {};
+        tempObj.item = this.possibleItems[i];
+
+        var STIER = this.getChampForItem(this.possibleItems[i], 0);
+        var ATIER = this.getChampForItem(this.possibleItems[i], 1);
+        var OTHERS = this.getChampForItem(this.possibleItems[i], 2);
+
+        if (STIER.length > 0) {
+          tempObj.stier = {};
+          tempObj.stier.carrysNb = STIER.length;
+        }
+        if (ATIER.length > 0) {
+          tempObj.atier = {};
+          tempObj.atier.carrysNb = ATIER.length;
+        }
+        if (OTHERS.length > 0) {
+          tempObj.other = {};
+          tempObj.other.carrysNb = OTHERS.length;
+        }
+
+        itemsList.push(tempObj);
+      }
+
+      var tempObjWithPonderateValue = [];
+
+      for (let i = 0; i < itemsList.length; i++) {
+        var valueToPush = 0;
+        if ("stier" in itemsList[i]) {
+          valueToPush = valueToPush + itemsList[i].stier.carrysNb * 1000;
+        }
+
+        if ("atier" in itemsList[i]) {
+          valueToPush = valueToPush + itemsList[i].atier.carrysNb * 10;
+        }
+
+        if ("other" in itemsList[i]) {
+          valueToPush = valueToPush + itemsList[i].other.carrysNb * 0.1;
+        }
+
+        tempObjWithPonderateValue.push(valueToPush);
+      }
+
+      this.possibleItems = [];
+
+      for (let i = 0; i < tempObjWithPonderateValue.length; i++) {
+        var indexToPush = 0;
+
+        indexToPush = this.indexOfMax(tempObjWithPonderateValue);
+
+        this.possibleItems.push(itemsList[indexToPush].item);
+
+        tempObjWithPonderateValue[indexToPush] = 0;
+      }
+    },
+    indexOfMax(arr) {
+      if (arr.length === 0) {
+        return -1;
+      }
+
+      var max = arr[0];
+      var maxIndex = 0;
+
+      for (var i = 1; i < arr.length; i++) {
+        if (arr[i] > max) {
+          maxIndex = i;
+          max = arr[i];
+        }
+      }
+
+      return maxIndex;
     }
   },
   mounted() {
     this.getPossibleItems();
+    this.sortPossibleItems();
   }
 };
 </script>
 
 <style style="scss" scoped>
 .item-container {
+  position: relative;
   display: flex;
   flex-wrap: wrap;
+  width: 100%;
+}
+
+p {
+  text-align: center;
+  font-weight: bold;
+}
+
+.item-col {
+  background-color: #4d5061;
+}
+
+.btn-container {
+  width: 150px;
 }
 
 .possibleItem {
   margin-right: 5px;
-}
-
-.btn-container {
-  position: relative;
 }
 
 .slamBtn {
@@ -541,5 +669,26 @@ export default {
   width: fit-content;
   margin-right: 0 !important;
   margin-left: 0 !important;
+}
+
+.item-name-container {
+  position: relative;
+  width: 50%;
+  margin-left: 15px;
+}
+
+.center-text {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+p {
+  margin: 0 !important;
+}
+
+.item-name {
+  font-size: 1.8em;
+  font-weight: bold;
 }
 </style>

@@ -1,13 +1,16 @@
 <template>
   <div>
     <div class="text">Select item</div>
-    <div class="itemsContainer">
-      <div class="item" v-for="item in items" :key="item.iditems">
-        <img
+    <div class="container">
+      <div class="itemsContainer">
+        <div
           v-on:click="selectItem(item)"
-          :src="getImgUrlItems(item.id)"
-          v-bind:alt="item.name"
-        />
+          class="item center"
+          v-for="item in items"
+          :key="item.iditems"
+        >
+          <img :src="getImgUrlItems(item.id)" v-bind:alt="item.name" />
+        </div>
       </div>
     </div>
   </div>
@@ -61,6 +64,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$cyan: #60daaa;
+$blue: #5c80bc;
+
 .item {
   width: fit-content;
   height: fit-content;
@@ -68,32 +74,100 @@ export default {
   justify-content: center;
   align-items: center;
   margin: 5px;
+  cursor: pointer;
+
+  // To avoid blue selection of HTML items
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  background: none;
+  border: 0;
+  box-sizing: border-box;
+  margin: 0.1em;
+  padding: 0.1em;
+
+  // Using inset box-shadow instead of border for sizing simplicity
+  box-shadow: inset 0 0 0 2px $blue;
+
+  // Required, since we're setting absolute on pseudo-elements
+  position: relative;
+  vertical-align: middle;
+
+  &::before,
+  &::after {
+    box-sizing: inherit;
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
 
   img {
-    border-radius: 15px;
     height: 75px;
+    background: black;
   }
 }
 
+// Does not inherit
+.center {
+  &:hover {
+    color: $cyan;
+  }
+
+  // Set up base styles, we're going to scale instead of animating width/height
+  &::before,
+  &::after {
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    transform-origin: center; // Ensure scaling is done from the center (expands outwards)
+  }
+
+  // scale3d(<scale-horizontal>, <scale-vertical>, <scale-depth>);
+  &::before {
+    border-top: 2px solid $cyan;
+    border-bottom: 2px solid $cyan;
+    transform: scale3d(0, 1, 1); // Shrink only width
+  }
+
+  &::after {
+    border-left: 2px solid $cyan;
+    border-right: 2px solid $cyan;
+    transform: scale3d(1, 0, 1); // Shrink only height
+  }
+
+  &:hover::before,
+  &:hover::after {
+    transform: scale3d(1, 1, 1); // Show full-size
+    transition: transform 0.5s;
+  }
+}
+
+.container {
+  height: calc(100% - 36px);
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .itemsContainer {
-  height: 80%;
-  width: 80%;
-  margin: auto;
+  position: relative;
+  width: 100%;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  align-items: center;
-  position: relative;
-  top: 50%;
-  transform: translateY(-50%);
 }
 
 .text {
-  position: absolute;
   width: 100%;
-  text-align: center;
   font-weight: bold;
-  font-size: 2em;
-  height: 10%;
+  font-size: 1.5em;
+  // background-color: #1a535c  
+  background: linear-gradient(#1a535c, #216a75);
+  padding-left: 10px;
 }
 </style>
