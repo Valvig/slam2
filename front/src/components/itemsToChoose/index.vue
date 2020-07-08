@@ -1,6 +1,9 @@
 <template>
   <div>
-    <div class="text">Select item</div>
+    <div class="text">
+      <font-awesome-icon class="" icon="hand-pointer"/> Select item
+    </div>
+    
     <div class="container">
       <div class="itemsContainer">
         <div
@@ -166,7 +169,7 @@ $blue: #5c80bc;
   width: 100%;
   font-weight: bold;
   font-size: 1.5em;
-  // background-color: #1a535c  
+  // background-color: #1a535c
   background: linear-gradient(#1a535c, #216a75);
   padding-left: 10px;
 }

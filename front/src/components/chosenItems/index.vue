@@ -1,6 +1,6 @@
 <template>
-  <div class="chosenItemsContainer">
-    <div class="textChosen">My items</div>
+  <div :class="'chosenItemsContainer ' + isActive()">
+    <div class="textChosen"><font-awesome-icon icon="box-open" /> My items</div>
     <div class="imgContainer items">
       <div
         class="chosenItem"
@@ -10,29 +10,41 @@
         <img class="cross" v-on:click="deleteItem(item)" src="@/assets/cross.svg" alt="delete item" />
         <img class="itemImg" :src="getImgUrlItems(item.id)" v-bind:alt="item.name" />
       </div>
-    </div>
-
-    <div class="imgContainer fullItems">
       <div
-        class="chosenItem"
-        v-for="fullItem in this.$store.state.fullItems"
-        :key="fullItem.id+'_'+getRandomNumber()"
+        class="chosenFullItem"
+        v-for="item in this.$store.state.fullItems"
+        :key="item.iditems+'_'+getRandomNumber()"
       >
         <img
           class="cross"
-          v-on:click="deleteFullItem(fullItem)"
+          v-on:click="deleteFullItem(item)"
           src="@/assets/cross.svg"
           alt="delete item"
         />
-        <img class="itemImg" :src="getImgUrlItems(fullItem.id)" v-bind:alt="fullItem.name" />
+        <img class="itemImg" :src="getImgUrlItems(item.id)" v-bind:alt="item.name" />
+      </div>
+    </div>
+
+    <div class="imgContainer champs">
+      <div
+        class="chosenItem"
+        v-for="champ in this.$store.state.champWithItem"
+        :key="champ.id+'_'+getRandomNumber()"
+      >
+        <selectedChamp :champion="champ" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import selectedChamp from "@/components/selectedChamp";
+
 export default {
   name: "chosen-items",
+  components: {
+    selectedChamp
+  },
   methods: {
     getImgUrlItems(id) {
       var normalizedName = "";
@@ -45,10 +57,17 @@ export default {
       this.$store.commit("deleteItem", item);
     },
     deleteFullItem(fullItem) {
-      this.$store.commit("deleteFullItem", fullItem);
+      var payload = { item: fullItem, deleteToAddToChamp: false };
+
+      this.$store.commit("deleteFullItem", payload);
     },
     getRandomNumber() {
       return Math.floor(Math.random() * 1000);
+    },
+    isActive() {
+      if (this.$store.state.items.length > 0 || this.$store.state.champWithItem.length > 0 || this.$store.state.fullItems.length > 0) {
+        return "active"
+      }
     }
   }
 };
@@ -57,17 +76,34 @@ export default {
 <style lang="scss" scoped>
 $heightItem: 75px;
 
+.chosenItemsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  opacity: 0;
+  height: 0;
+  transition: opacity 0.3s, height 0.3s 0.1s;
+}
+
+.active{
+  opacity: 1;
+  height: fit-content;
+  transition: opacity 0.3s, height 0.3s 0.1s;
+}
+
 .imgContainer {
   display: flex;
   flex-wrap: wrap;
+  min-height: inherit;
 }
 
 .items,
-.fullItems {
+.champs {
   width: 50%;
+  min-width: 50%;
 }
 
-.chosenItem {
+.chosenItem,
+.chosenFullItem {
   position: relative;
   height: $heightItem;
   width: $heightItem;

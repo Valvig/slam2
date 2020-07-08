@@ -1,20 +1,26 @@
 <template>
   <v-app v-if="!loading" id="app">
-    <menuApp />
-    <v-container class="app-container">
-      <!-- LEFT ADS -->
-      <ads class="ads" />
+    <adblock @passValue="add = $event"></adblock>
+    
+    <div class="adBlockWarning" v-if="add == 'detected'">
+      <adBlockWarning />
+    </div>
+    <menuApp class="menu" />
 
+    <!-- LEFT ADS -->
+    <ads class="ads" />
+
+    <v-container class="app-container">
       <!-- App container -->
       <div class="middle-container">
         <itemsToChoose class="itemToChoose" />
         <chosenItems class="chosenItems" />
         <itemsCard class="itemsCard" />
       </div>
-
-      <!-- RIGHT ADS -->
-      <ads class="ads" />
     </v-container>
+
+    <!-- RIGHT ADS -->
+    <ads class="ads right" />
 
     <footerApp class="footer" />
   </v-app>
@@ -28,6 +34,8 @@ import itemsToChoose from "@/components/itemsToChoose";
 import ads from "@/components/ads";
 import menuApp from "@/components/menu";
 import footerApp from "@/components/footer";
+import adBlockWarning from "@/components/adBlockWarning";
+import adblock from "vue-adblock";
 
 import APIRoutes from "@/services/APIRoutes";
 
@@ -39,12 +47,15 @@ export default {
     itemsToChoose,
     ads,
     menuApp,
-    footerApp
+    footerApp,
+    adblock,
+    adBlockWarning
   },
   data() {
     return {
       loading: true,
-      listName: []
+      listName: [],
+      add: ""
     };
   },
   methods: {
@@ -64,13 +75,25 @@ export default {
     this.$store.state.championsList = await this.getChampionsList();
     this.$store.state.itemsList = await this.getItemsList();
     this.loading = false;
-    // this.getProPlayerListName();
   }
 };
 </script>
 
-<style lang="scss" scoped>
-@import url('https://fonts.googleapis.com/css2?family=Catamaran:wght@100;200;300;400;500;600;700;800;900&display=swap');
+<style lang="scss">
+@import url("https://fonts.googleapis.com/css2?family=Catamaran:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
+$menuHeight: 48px;
+
+.menu {
+  z-index: 1;
+}
+
+.adBlockWarning{
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  z-index: 2;
+}
 
 #app,
 .app-container {
@@ -78,9 +101,9 @@ export default {
   height: 100%;
   max-width: 100%;
   max-height: 100%;
-  color: #F8F0FB;
-  background-color: #24252E;
-  font-family: 'Catamaran', sans-serif;
+  color: #f8f0fb;
+  background-color: #24252e;
+  font-family: "Catamaran", sans-serif;
 }
 
 .app-container {
@@ -90,13 +113,18 @@ export default {
 }
 
 .ads {
-  position: relative;
-  height: 100%;
-  width: 10%;
+  position: fixed;
+  height: 100vh;
+  width: calc((100vw - 1200px) / 2);
+}
+
+.right {
+  right: 0px;
 }
 
 .middle-container {
   width: 100%;
+  padding-top: 10px;
 }
 
 .itemToChoose {
@@ -122,6 +150,12 @@ export default {
 .chosenItems,
 .itemsCard {
   background-color: #30323d;
+  border: 1px solid #414352;
+
+  .container.container--fluid {
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+  }
 }
 
 .footer {
