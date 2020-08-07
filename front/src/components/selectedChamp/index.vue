@@ -121,12 +121,9 @@ $heightItems: $heightChamp/3;
   cursor: pointer;
 }
 
-// .itemSelected {
-// }
-
 .greyScale {
   -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
   filter: grayscale(100%);
-  opacity: 70%;
+  opacity: 80%;
 }
 </style>

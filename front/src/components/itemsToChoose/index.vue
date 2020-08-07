@@ -1,28 +1,10 @@
 <template>
-  <!-- <div>
-    <div class="text">
-      <font-awesome-icon class icon="hand-pointer" />Select item
-    </div>
-
-    <div class="container">
-      <div class="itemsContainer">
-        <div
-          v-on:click="selectItem(item)"
-          class="item center"
-          v-for="item in items"
-          :key="item.iditems"
-        >
-          <img :src="getImgUrlItems(item.id)" v-bind:alt="item.name" />
-        </div>
-      </div>
-    </div>
-  </div>-->
   <div>
     <v-tooltip left>
       <template v-slot:activator="{ on, attrs }">
-        <div v-bind="attrs" v-on="on">
+        <div class="box" v-bind="attrs" v-on="on">
           <div class="text">
-            <font-awesome-icon class icon="hand-pointer" />Select item
+            <font-awesome-icon class icon="hand-pointer" /> Select item
           </div>
 
           <div class="container">
@@ -197,5 +179,9 @@ $blue: #5c80bc;
   // background-color: #1a535c
   background: linear-gradient(#1a535c, #216a75);
   padding-left: 10px;
+}
+
+.box {
+  height: 100%;
 }
 </style>

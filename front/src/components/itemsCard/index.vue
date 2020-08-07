@@ -9,46 +9,48 @@
 
     <v-container v-for="item in possibleItems" :key="item.name + 'possibleItem'" fluid>
       <v-row>
-        <v-col class="item-col">
-          <div class="item-container">
-            <div class="possibleItem">
-              <v-img
-                :src="getImgUrlItems(item.id)"
-                class="white--text align-end"
-                height="76px"
-                width="76px"
-                v-bind:alt="item.name"
-              ></v-img>
+        <v-tooltip left>
+          <template v-slot:activator="{ on, attrs }">
+            <div class="box" v-bind="attrs" v-on="on">
+              <v-col class="item-col">
+                <div class="item-container">
+                  <div class="possibleItem">
+                    <v-img
+                      :src="getImgUrlItems(item.id)"
+                      class="white--text align-end"
+                      height="76px"
+                      width="76px"
+                      v-bind:alt="item.name"
+                    ></v-img>
+                  </div>
+                  <div class="receipe">
+                    <v-img
+                      :src="getImgUrlItems(item.item1.id)"
+                      class="white--text align-end"
+                      height="38px"
+                      width="38px"
+                      v-bind:alt="item.item1.name"
+                    ></v-img>
+                    <v-img
+                      :src="getImgUrlItems(item.item2.id)"
+                      class="white--text align-end"
+                      height="38px"
+                      width="38px"
+                      v-bind:alt="item.item2.name"
+                    ></v-img>
+                  </div>
+                  <div class="item-name-container">
+                    <div class="center-text">
+                      <p class="item-name">{{item.name}}</p>
+                    </div>
+                  </div>
+                  <v-spacer></v-spacer>
+                </div>
+              </v-col>
             </div>
-            <div class="receipe">
-              <v-img
-                :src="getImgUrlItems(item.item1.id)"
-                class="white--text align-end"
-                height="38px"
-                width="38px"
-                v-bind:alt="item.item1.name"
-              ></v-img>
-              <v-img
-                :src="getImgUrlItems(item.item2.id)"
-                class="white--text align-end"
-                height="38px"
-                width="38px"
-                v-bind:alt="item.item2.name"
-              ></v-img>
-            </div>
-            <div class="item-name-container">
-              <div class="center-text">
-                <p class="item-name">{{item.name}}</p>
-              </div>
-            </div>
-            <v-spacer></v-spacer>
-            <!-- <div class="tip-container">
-              <div class="center-text">
-                <p>(Click on a champion to add it to your comp)</p>
-              </div>
-            </div>-->
-          </div>
-        </v-col>
+          </template>
+          <span>Click on an champion to add it to your list.</span>
+        </v-tooltip>
       </v-row>
       <v-row>
         <v-col>
@@ -103,7 +105,7 @@ import championCard from "@/components/championCard";
 export default {
   name: "items-card",
   components: {
-    championCard
+    championCard,
   },
   data() {
     return {
@@ -116,7 +118,7 @@ export default {
       // SNACKBAR
       snackbar: false,
       text: "Maximum 3 items for each champions",
-      timeout: 2000
+      timeout: 2000,
     };
   },
   watch: {
@@ -127,20 +129,20 @@ export default {
     fullItemsSelected() {
       this.getPossibleItems();
       this.sortPossibleItems();
-    }
+    },
   },
   computed: {
     ...mapGetters({
       itemsSelected: "getItems",
-      fullItemsSelected: "getFullItems"
-    })
+      fullItemsSelected: "getFullItems",
+    }),
   },
   methods: {
     getPossibleItems() {
       var items = [];
       this.possibleItems = [];
 
-      _.forEach(this.$store.state.items, function(item) {
+      _.forEach(this.$store.state.items, function (item) {
         items.push(item);
       });
 
@@ -485,7 +487,7 @@ export default {
       }
     },
     pushItemInArray(item1, item2, name) {
-      this.items.forEach(item => {
+      this.items.forEach((item) => {
         if (item.name === name) {
           if (this.possibleItems.indexOf(item) === -1) {
             item.item1 = item1;
@@ -520,7 +522,7 @@ export default {
         bestItems: bestItemsForChamp,
         item: [item],
         item1: item1,
-        item2: item2
+        item2: item2,
       };
 
       var add = true;
@@ -580,7 +582,7 @@ export default {
 
       var that = this;
 
-      _.forEach(this.champions, function(champion) {
+      _.forEach(this.champions, function (champion) {
         let itemsChamp = champion.items;
         itemsChamp = itemsChamp.split(";");
         for (let i = 0; i < itemsChamp.length; i++) {
@@ -694,14 +696,14 @@ export default {
     },
     isActive() {
       if (this.possibleItems.length > 0) {
-        return "active"
+        return "active";
       }
-    }
+    },
   },
   mounted() {
     this.getPossibleItems();
     this.sortPossibleItems();
-  }
+  },
 };
 </script>
 
@@ -806,7 +808,12 @@ p {
   font-weight: bold;
 }
 
-.receipe{
+.receipe {
   background: black;
+}
+
+.box {
+  height: 100%;
+  width: 100%;
 }
 </style>
