@@ -124,6 +124,7 @@ $heightItem: 75px;
   width: 20%;
   background: #ffffffd3;
   border-radius: 500px;
+  cursor: pointer;
 }
 
 .textChosen {

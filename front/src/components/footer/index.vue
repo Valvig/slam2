@@ -17,10 +17,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 .footer {
   clear: both;
   position: relative;
-  margin-top: 15px;
+  margin-top: 10px;
   padding: 15px 0;
   bottom: 0;
   width: 100%;

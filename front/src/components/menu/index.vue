@@ -2,6 +2,7 @@
   <v-app-bar dense class="menu-app">
     <img class="logo" src="@/assets/logo/tactipWhite.svg" alt="delete item" />
     <v-spacer></v-spacer>
+    <v-switch v-model="disabled" class="ma-2" label="Tutorial"></v-switch>
   </v-app-bar>
 </template>
 

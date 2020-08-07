@@ -1,6 +1,6 @@
-   <template>
+<template>
   <div>
-    <div class="adsContainer">
+    <div :class="className">
       <Adsense data-ad-client="2567669200157304" data-ad-slot="1234567890"></Adsense>
     </div>
   </div>
@@ -9,6 +9,9 @@
 <script>
 export default {
   name: "ads",
+  props: {
+    className: String
+  },
   data() {
     return {};
   }
@@ -16,7 +19,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.adsContainer {
+.leftAds {
   position: absolute;
   background: red;
   width: 160px;
@@ -25,6 +28,15 @@ export default {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.upBottomAds {
+  position: absolute;
+  background: red;
+  width: 900px;
+  height: 90px;
+  left: 50%;
+  transform: translate(-50%, 0);
 }
 </style>
 

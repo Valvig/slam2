@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <!-- <div>
     <div class="text">
-      <font-awesome-icon class="" icon="hand-pointer"/> Select item
+      <font-awesome-icon class icon="hand-pointer" />Select item
     </div>
-    
+
     <div class="container">
       <div class="itemsContainer">
         <div
@@ -16,6 +16,31 @@
         </div>
       </div>
     </div>
+  </div>-->
+  <div>
+    <v-tooltip left>
+      <template v-slot:activator="{ on, attrs }">
+        <div v-bind="attrs" v-on="on">
+          <div class="text">
+            <font-awesome-icon class icon="hand-pointer" />Select item
+          </div>
+
+          <div class="container">
+            <div class="itemsContainer">
+              <div
+                v-on:click="selectItem(item)"
+                class="item center"
+                v-for="item in items"
+                :key="item.iditems"
+              >
+                <img :src="getImgUrlItems(item.id)" v-bind:alt="item.name" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>
+      <span>Click on an item to add it to your list.</span>
+    </v-tooltip>
   </div>
 </template>
 
@@ -24,7 +49,7 @@ export default {
   name: "items-to-choosecard",
   data() {
     return {
-      items: []
+      items: [],
     };
   },
   methods: {
@@ -58,11 +83,11 @@ export default {
     },
     selectItem(item) {
       this.$store.commit("addItem", item);
-    }
+    },
   },
   created() {
     this.getSmallItems();
-  }
+  },
 };
 </script>
 

@@ -118,6 +118,7 @@ $heightItems: $heightChamp/3;
   width: 20%;
   background: #ffffffd3;
   border-radius: 500px;
+  cursor: pointer;
 }
 
 // .itemSelected {

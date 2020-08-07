@@ -132,6 +132,12 @@ $borderChampSize: 2px;
   height: $heightChamp;
   width: $heightChamp;
   position: relative;
+  cursor: pointer;
+}
+
+.possibleChamp:hover {
+  height: $heightChamp;
+  width: $heightChamp;
 }
 
 .champion {
