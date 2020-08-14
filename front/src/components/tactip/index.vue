@@ -4,19 +4,19 @@
     <ads class="adsUpBottom" :className="'upBottomAds'" />
 
     <!-- LEFT ADS -->
-    <ads class="ads" :className="'leftAds'" />
+    <ads v-if="isAdShow()" class="ads" :className="'leftAds'" />
+
+    <!-- RIGHT ADS -->
+    <ads v-if="isAdShow()" class="ads right" :className="'leftAds'" />
 
     <!-- App container -->
     <v-container class="app-container">
       <div class="middle-container">
-        <itemsToChoose class="itemToChoose" />
+        <itemsToChoose class="itemToChoose" :isTop="isTooltipTop()" />
         <chosenItems class="chosenItems" />
-        <itemsCard class="itemsCard" />
+        <itemsCard class="itemsCard" :isTop="isTooltipTop()"/>
       </div>
     </v-container>
-
-    <!-- RIGHT ADS -->
-    <ads class="ads right" :className="'leftAds'" />
 
     <!-- UPPER ADS -->
     <ads class="adsUpBottom" :className="'upBottomAds'" />
@@ -36,11 +36,56 @@ export default {
     itemsCard,
     chosenItems,
     itemsToChoose,
-    ads
+    ads,
   },
   data() {
-    return {};
-  }
+    return {
+      window: {
+        width: 0,
+        height: 0,
+      },
+    };
+  },
+  created() {
+    window.addEventListener("resize", this.handleResize);
+    this.handleResize();
+  },
+  destroyed() {
+    window.removeEventListener("resize", this.handleResize);
+  },
+  methods: {
+    handleResize() {
+      this.window.width = window.innerWidth;
+      this.window.height = window.innerHeight;
+    },
+    getSizeWindow() {
+      if (this.window.width > 1200) {
+        return "XLARGE";
+      } else if (this.window.width > 992) {
+        return "LARGE";
+      } else if (this.window.width > 768) {
+        return "MEDIUM";
+      } else if (this.window.width > 576) {
+        return "SMALL";
+      } else {
+        return "XSMALL";
+      }
+    },
+    isAdShow() {
+      if (this.getSizeWindow() === "XLARGE") {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    isTooltipTop() {
+      if (this.getSizeWindow() !== "XLARGE") {
+        return true;
+      } else {
+        return false;
+      }
+    },
+  },
 };
 </script>
 
@@ -68,9 +113,9 @@ export default {
 
 .ads {
   position: fixed;
-  top:0;
+  top: 0;
   height: 100vh;
-  width: calc((100vw - 1200px) / 2);
+  width: calc((100vw - 1160px) / 2);
 }
 
 .adsUpBottom {
@@ -90,7 +135,8 @@ export default {
 
 .itemToChoose {
   position: relative;
-  height: 20vh;
+  min-height: fit-content;
+  // height: 20vh;
 }
 
 .chosenItems,

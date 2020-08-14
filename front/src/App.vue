@@ -14,7 +14,7 @@
     <tuto v-if="firstTime" class="tuto" />
 
     <!-- APP -->
-    <tactip class="tactip" v-if="!firstTime" />
+    <tactip class="tactip" v-if="!firstTime && add !== 'detected'" />
 
     <!-- FOOTER -->
     <footerApp class="footer" />
@@ -41,13 +41,13 @@ export default {
     menuApp,
     footerApp,
     adblock,
-    adBlockWarning
+    adBlockWarning,
   },
   data() {
     return {
       loading: true,
       firstTime: false,
-      add: ""
+      add: "",
     };
   },
   methods: {
@@ -60,14 +60,14 @@ export default {
       const tempItemsList = await APIRoutes.getAllItems();
 
       return tempItemsList;
-    }
+    },
   },
   async mounted() {
     // Create cookie with Champions and items
     this.$store.state.championsList = await this.getChampionsList();
     this.$store.state.itemsList = await this.getItemsList();
     this.loading = false;
-  }
+  },
 };
 </script>
 
@@ -92,7 +92,7 @@ $menuHeight: 48px;
   position: fixed;
   height: 100vh;
   width: 100vw;
-  z-index: 2;
+  z-index: 200;
 }
 
 .tuto {
@@ -102,5 +102,9 @@ $menuHeight: 48px;
 
 .footer {
   background-color: #4d5061;
+}
+
+.theme--light.v-label {
+  color: white;
 }
 </style>

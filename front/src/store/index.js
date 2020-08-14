@@ -10,7 +10,8 @@ export const store = new Vuex.Store({
     itemsList: [],
     items: [],
     fullItems: [],
-    champWithItem: []
+    champWithItem: [],
+    tutorial: true
   },
   mutations: {
     addItem(state, item) {
@@ -135,6 +136,9 @@ export const store = new Vuex.Store({
           }
         }
       }
+    },
+    tutorial(state) {
+      state.tutorial = !state.tutorial
     }
   },
   getters: {

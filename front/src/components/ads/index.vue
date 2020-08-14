@@ -1,7 +1,11 @@
 <template>
   <div>
     <div :class="className">
-      <Adsense data-ad-client="2567669200157304" data-ad-slot="1234567890"></Adsense>
+      <Adsense
+        data-ad-client="2567669200157304"
+        data-ad-slot="1234567890"
+        data-full-width-responsive="true"
+      ></Adsense>
     </div>
   </div>
 </template>
@@ -10,11 +14,11 @@
 export default {
   name: "ads",
   props: {
-    className: String
+    className: String,
   },
   data() {
     return {};
-  }
+  },
 };
 </script>
 
@@ -33,7 +37,8 @@ export default {
 .upBottomAds {
   position: absolute;
   background: red;
-  width: 900px;
+  width: 100%;
+  max-width: 900px;
   height: 90px;
   left: 50%;
   transform: translate(-50%, 0);

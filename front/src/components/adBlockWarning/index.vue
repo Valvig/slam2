@@ -28,8 +28,8 @@ export default {
   methods: {
     reloadPage() {
       document.location.reload(true);
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -38,6 +38,7 @@ export default {
   position: relative;
   height: 100%;
   width: 100%;
+  background-color: #24252e;
 }
 
 .adblock {
@@ -90,5 +91,35 @@ export default {
   margin: auto;
   width: 30%;
   height: 100% !important;
+}
+
+@media (max-width: 1024px) {
+  .message {
+    font-size: 50px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .message {
+    font-size: 45px;
+  }
+
+  .red[data-v-f6f2c7b6] {
+    font-size: 40px;
+  }
+}
+
+@media (max-width: 425px) {
+  .message {
+    font-size: 30px;
+  }
+
+  .red[data-v-f6f2c7b6] {
+    font-size: 30px;
+  }
+
+  .btn {
+    width: 100%;
+  }
 }
 </style>

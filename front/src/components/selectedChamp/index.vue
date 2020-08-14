@@ -26,7 +26,7 @@
 export default {
   name: "selected-champ",
   props: {
-    champion: Object
+    champion: Object,
   },
   data() {
     return {};
@@ -72,8 +72,8 @@ export default {
       }
 
       return "greyScale";
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -125,5 +125,23 @@ $heightItems: $heightChamp/3;
   -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
   filter: grayscale(100%);
   opacity: 80%;
+}
+
+@media (max-width: 375px) {
+  $heightChamp: 60px;
+  $heightItems: $heightChamp/3;
+
+  .possibleChamp {
+    height: $heightChamp;
+    width: $heightChamp;
+  }
+  .bestItems {
+    height: $heightItems;
+    width: $heightChamp;
+
+    .itemCol {
+      width: $heightItems;
+    }
+  }
 }
 </style>

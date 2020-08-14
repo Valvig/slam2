@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-tooltip left>
+    <v-tooltip :disabled="!tutorial" v-model="tutorial" :top="isTop" :left="!isTop">
       <template v-slot:activator="{ on, attrs }">
         <div class="box" v-bind="attrs" v-on="on">
           <div class="text">
@@ -29,10 +29,23 @@
 <script>
 export default {
   name: "items-to-choosecard",
+  props: {
+    isTop: Boolean,
+  },
   data() {
     return {
       items: [],
     };
+  },
+  watch: {
+    tutorial(newValue) {
+      this.tutorial = newValue;
+    },
+  },
+  computed: {
+    tutorial() {
+      return this.$store.state.tutorial;
+    },
   },
   methods: {
     getImgUrlItems(id) {
@@ -183,5 +196,32 @@ $blue: #5c80bc;
 
 .box {
   height: 100%;
+}
+
+@media (max-width: 768px) {
+  .box {
+    height: fit-content;
+  }
+  .container {
+    width: 70%;
+  }
+}
+
+@media (max-width: 425px) {
+  .itemToChoose {
+    height: fit-content;
+  }
+}
+
+@media (max-width: 375px) {
+  .container {
+    width: 80%;
+  }
+}
+
+@media (max-width: 320px) {
+  .container {
+    width: 100%;
+  }
 }
 </style>

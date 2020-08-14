@@ -7,9 +7,13 @@
       </template>
     </v-snackbar>
 
-    <v-container v-for="item in possibleItems" :key="item.name + 'possibleItem'" fluid>
+    <v-container v-for="(item, index) in possibleItems" :key="item.name + index" fluid>
       <v-row>
-        <v-tooltip left>
+        <v-tooltip
+          :disabled="getIsEnableTutorial(index)"
+          :top="isTop"
+          :left="!isTop"
+        >
           <template v-slot:activator="{ on, attrs }">
             <div class="box" v-bind="attrs" v-on="on">
               <v-col class="item-col">
@@ -53,7 +57,7 @@
         </v-tooltip>
       </v-row>
       <v-row>
-        <v-col>
+        <v-col class="colMobile">
           <p>S TIER</p>
           <div class="carrys-container stierBorder">
             <v-container
@@ -66,7 +70,7 @@
             </v-container>
           </div>
         </v-col>
-        <v-col>
+        <v-col class="colMobile">
           <p>A TIER</p>
           <div class="useful-container atierBorder">
             <v-container
@@ -79,7 +83,7 @@
             </v-container>
           </div>
         </v-col>
-        <v-col>
+        <v-col class="colMobile">
           <p>OTHERS</p>
           <div class="others-container othersBorder">
             <v-container
@@ -104,6 +108,9 @@ import championCard from "@/components/championCard";
 
 export default {
   name: "items-card",
+  props: {
+    isTop: Boolean,
+  },
   components: {
     championCard,
   },
@@ -130,12 +137,18 @@ export default {
       this.getPossibleItems();
       this.sortPossibleItems();
     },
+    tutorial(newValue) {
+      this.tutorial = newValue;
+    },
   },
   computed: {
     ...mapGetters({
       itemsSelected: "getItems",
       fullItemsSelected: "getFullItems",
     }),
+    tutorial() {
+      return this.$store.state.tutorial;
+    },
   },
   methods: {
     getPossibleItems() {
@@ -699,6 +712,17 @@ export default {
         return "active";
       }
     },
+    getIsEnableTutorial (index) {
+      if (index == 0) {
+        if (this.$store.state.tutorial == true) {
+          return false
+        } else {
+          return true
+        }
+      } else {
+        return true
+      }
+    },
   },
   mounted() {
     this.getPossibleItems();
@@ -815,5 +839,12 @@ p {
 .box {
   height: 100%;
   width: 100%;
+}
+
+@media (max-width: 425px) {
+  .colMobile {
+    width: 100% !important;
+    flex-basis: auto;
+  }
 }
 </style>

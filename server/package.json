@@ -31,6 +31,6 @@
     "nodemon": "^2.0.4",
     "request-rate-limiter": "^2.0.3",
     "smart-request-balancer": "^2.1.1",
-    "twisted": "^1.24.0"
+    "twisted": "^1.25.0"
   }
 }

@@ -111,6 +111,7 @@ $heightItem: 75px;
   background: black;
 }
 
+
 .itemImg {
   height: 100%;
   width: 100%;
@@ -135,5 +136,13 @@ $heightItem: 75px;
   // background-color: #1a535c;
   background: linear-gradient(#1a535c, #216a75);
   padding-left: 10px;
+}
+
+@media (max-width: 375px) {
+  .chosenItem {
+    height: 60px;
+    width: 60px;
+    margin: 5px;
+  }
 }
 </style>
