@@ -64,5 +64,5 @@ app.listen(PORT, () => {
 
 // TEST ONLY
 // run.workWithOldDatas()
-// run.getNewDatas()
+run.getNewDatas()
 

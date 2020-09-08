@@ -1,9 +1,12 @@
 <template>
   <div>
     <div :class="className">
+      <!-- Bottom and Top Ads -->
       <Adsense
-        data-ad-client="2567669200157304"
-        data-ad-slot="1234567890"
+        v-if="className == 'upBottomAds'"
+        :data-ad-client="dataAdClient"
+        :data-ad-slot="dataAdSlot"
+        data-ad-format="auto"
         data-full-width-responsive="true"
       ></Adsense>
     </div>
@@ -15,6 +18,8 @@ export default {
   name: "ads",
   props: {
     className: String,
+    dataAdClient: String,
+    dataAdSlot: String
   },
   data() {
     return {};
@@ -25,7 +30,6 @@ export default {
 <style lang="scss" scoped>
 .leftAds {
   position: absolute;
-  background: red;
   width: 160px;
   height: 600px;
   margin: 0;
@@ -36,7 +40,6 @@ export default {
 
 .upBottomAds {
   position: absolute;
-  background: red;
   width: 100%;
   max-width: 900px;
   height: 90px;

@@ -2,7 +2,7 @@ var _ = require("lodash")
 var axios = require("axios")
 const Bottleneck = require('bottleneck')
 const riotKey = require('../riotApi.json')
-const oldDatas = require('../datasTest.json')
+const oldDatas = require('../datasUnits2.json')
 const champs = require('./champions.json')
 const itemsJson = require('./items.json')
 var fs = require('fs')
@@ -61,7 +61,7 @@ async function getAllMatchs(puuidList) {
 
   // Map over all the results and call our pretend API, stashing the promises in a new array
   const allThePromises = urlList.map(name => {
-    urlApi = "https://europe.api.riotgames.com/tft/match/v1/matches/by-puuid/" + encodeURI(name) + "/ids?count=30"
+    urlApi = "https://europe.api.riotgames.com/tft/match/v1/matches/by-puuid/" + encodeURI(name) + "/ids?count=20"
     return throttledGetMyData(urlApi)
   })
 
@@ -132,8 +132,8 @@ function getMatchInfosList(results) {
 }
 
 async function useMatchInfos(matchInfos) {
-  // Date time today                          - 48 hours in milliseconds
-  var yesterdaySeconds = new Date().getTime() - (48 * 60 * 60 * 1000)
+  // Date time today                          - 24 hours in milliseconds
+  var yesterdaySeconds = new Date().getTime() - (24 * 60 * 60 * 1000)
 
   var unitsInfos = []
 
@@ -371,7 +371,7 @@ function updateDatabase(units, carryBool) {
 
     console.log(carryBool)
     axios.create({
-        baseURL: `http://localhost:8081/api`,
+        baseURL: `http://tactip.net:8081/api`,
         headers: {
           'Access-Control-Allow-Origin': '*',
           'Access-Control-Allow-Headers': '*'
@@ -392,7 +392,7 @@ function createItemsInDB() {
       itemsJson[i] = '0' + itemsJson[i]
     }
     axios.create({
-        baseURL: `http://localhost:8081/api`,
+        baseURL: `http://tactip.net:8081/api`,
         headers: {
           'Access-Control-Allow-Origin': '*',
           'Access-Control-Allow-Headers': '*'
@@ -409,31 +409,51 @@ function createItemsInDB() {
 
 module.exports = {
   getNewDatas: async function (req, res) {
-    console.log("Test 1")
+    console.log("################# Start of TFT data's analysis #################")
+    console.log("Get best players in EUW")
     var playersName = await getBestPlayers()
-    console.log("Test 2")
+    console.log("Done getting best players in EUW")
 
-    // FOR TEST ONLY
-    // playersName = playersName.slice(0, 200)
-    console.log("playersName.length = " + playersName.length)
-    // FOR TEST ONLY
-
+    // // FOR TEST ONLY
+    playersName = playersName.slice(0, 10)
+    console.log("Analysing " + playersName.length + " players.")
+    // // FOR TEST ONLY
+    
+    console.log("Get puuid of all players")
     const puuidList = await getAllPuuid(playersName)
-    console.log("Test 3")
+    console.log("Done getting puuid of all players")
+
+    console.log("Get all matchs of players")
     let matchsList = await getAllMatchs(puuidList)
-    console.log("matchsList.length = " + matchsList.length)
-    console.log("Test 4")
+    console.log("Done getting all matchs of players")
 
+    console.log("Analysing " + matchsList.length + "matches.")
+
+    console.log("Get all matchs infos")
     const matchsInfosList = await getAllMatchsInfos(matchsList)
-    console.log("Test 5")
+    console.log("Done getting all matchs infos")
 
+    console.log("Use all matchs infos")
     const matchInfosValues = await useMatchInfos(matchsInfosList)
-    console.log("Test 6")
+    console.log("Done using all matchs infos")
 
+    console.log("Get status of each champ")
     const carrysUsefulAndOthers = await getCarrysUsefulAndOthers(matchInfosValues)
-    console.log("Test 7")
-    const bestItems = await getBestItems(carrysUsefulAndOthers[0])
-    console.log("Test 8")
+    console.log("Done getting status of each champ")
+
+    console.log("Get best items for each status")
+    const bestItemsCarrys = await getBestItems(carrysUsefulAndOthers[0])
+    const bestItemsUseful = await getBestItems(carrysUsefulAndOthers[1])
+    const bestItemsOthers = await getBestItems(carrysUsefulAndOthers[2])
+    console.log("Done getting best items for each status")
+
+    console.log("Update DB")
+    const updateDBCarrys = await updateDatabase(bestItemsCarrys, 0)
+    const updateDBUseful = await updateDatabase(bestItemsUseful, 1)
+    const updateDBOthers = await updateDatabase(bestItemsOthers, 2)
+    console.log("Done updating DB")
+
+    console.log("################# End of TFT data's analysis #################")
   },
 
   workWithOldDatas: async function (req, res) {

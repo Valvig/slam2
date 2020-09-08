@@ -1,34 +1,56 @@
 <template>
   <div class="tactip-container">
     <!-- UPPER ADS -->
-    <ads class="adsUpBottom" :className="'upBottomAds'" />
+    <ads
+      class="adsUpBottom"
+      :className="'upBottomAds'"
+      :dataAdClient="'ca-pub-3714641472243944'"
+      :dataAdSlot="'2965759942'"
+    />
 
     <!-- LEFT ADS -->
-    <ads v-if="isAdShow()" class="ads" :className="'leftAds'" />
+    <ads
+      v-if="isAdShow()"
+      class="ads"
+      :className="'leftAds'"
+      :dataAdClient="'ca-pub-3714641472243944'"
+      :dataAdSlot="'1377346104'"
+    />
 
     <!-- RIGHT ADS -->
-    <ads v-if="isAdShow()" class="ads right" :className="'leftAds'" />
+    <ads
+      v-if="isAdShow()"
+      class="ads right"
+      :className="'leftAds'"
+      :dataAdClient="'ca-pub-3714641472243944'"
+      :dataAdSlot="'3895698237'"
+    />
 
     <!-- App container -->
     <v-container class="app-container">
       <div class="middle-container">
         <itemsToChoose class="itemToChoose" :isTop="isTooltipTop()" />
         <chosenItems class="chosenItems" />
-        <itemsCard class="itemsCard" :isTop="isTooltipTop()"/>
+        <itemsCard class="itemsCard" :isTop="isTooltipTop()" />
       </div>
     </v-container>
 
-    <!-- UPPER ADS -->
-    <ads class="adsUpBottom" :className="'upBottomAds'" />
+    <!-- Bottom ADS -->
+    <ads
+      class="adsUpBottom"
+      :className="'upBottomAds'"
+      :dataAdClient="'ca-pub-3714641472243944'"
+      :dataAdSlot="'4195081132'"
+    />
   </div>
 </template>
 
 <script>
 /* App parts */
-import itemsCard from "@/components/itemsCard";
-import chosenItems from "@/components/chosenItems";
-import itemsToChoose from "@/components/itemsToChoose";
-import ads from "@/components/ads";
+import itemsCard from "./itemsCard";
+import chosenItems from "./chosenItems";
+import itemsToChoose from "./itemsToChoose";
+import ads from "./ads";
 
 export default {
   name: "App",
@@ -96,7 +118,6 @@ export default {
 
 .app-container {
   color: #f8f0fb;
-  background-color: #24252e;
   font-family: "Catamaran", sans-serif;
 }
 
@@ -104,11 +125,6 @@ export default {
   position: relative;
   display: flex;
   padding: 0px !important;
-}
-
-.tuto {
-  min-height: 100vh;
-  width: 100vw;
 }
 
 .ads {

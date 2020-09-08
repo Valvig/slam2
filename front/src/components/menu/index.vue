@@ -1,8 +1,13 @@
 <template>
   <v-app-bar dense class="menu-app">
-    <img class="logo" src="@/assets/logo/tactipWhite.svg" alt="delete item" />
+    <img
+      v-on:click="goToHomePage()"
+      class="logo"
+      src="@/assets/logo/tactipWhite.svg"
+      alt="delete item"
+    />
     <v-spacer></v-spacer>
-    <v-switch v-model="tutorial" info class="ma-2 tutorial" label="Tutorial"></v-switch>
+    <v-switch v-if="show" v-model="tutorial" info class="ma-2 tutorial" label="Tutorial"></v-switch>
   </v-app-bar>
 </template>
 
@@ -13,13 +18,30 @@ export default {
     tutorial() {
       this.$store.commit("tutorial");
     },
+    $route(to) {
+      if (to.path == "/tactip") {
+        this.show = true;
+      } else {
+        this.show = false;
+      }
+    },
   },
   data() {
     return {
       tutorial: this.$store.state.tutorial,
+      show: false,
     };
   },
-  mounted() {},
+  methods: {
+    goToHomePage() {
+      this.$router.push("/");
+    }
+  },
+  mounted() {
+    if (this.$route.path == "/tactip") {
+      this.show = true;
+    }
+  },
 };
 </script>
 
@@ -36,6 +58,7 @@ $menuHeight: 48px;
 
 .logo {
   height: 60%;
+  cursor: pointer;
 }
 
 .tutorial {

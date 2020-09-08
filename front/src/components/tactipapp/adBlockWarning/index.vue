@@ -38,7 +38,6 @@ export default {
   position: relative;
   height: 100%;
   width: 100%;
-  background-color: #24252e;
 }
 
 .adblock {
@@ -104,7 +103,7 @@ export default {
     font-size: 45px;
   }
 
-  .red[data-v-f6f2c7b6] {
+  .red {
     font-size: 40px;
   }
 }
@@ -114,12 +113,70 @@ export default {
     font-size: 30px;
   }
 
-  .red[data-v-f6f2c7b6] {
+  .red {
     font-size: 30px;
   }
 
   .btn {
     width: 100%;
+  }
+}
+
+@media (max-width: 414px) {
+  .message {
+    font-size: 20px !important;
+  }
+
+  .red {
+    font-size: 15px;
+  }
+}
+
+@media (max-height: 800px) {
+  .message {
+    font-size: 50px;
+  }
+
+  .logocontainer {
+    margin-top: 15px;
+  }
+}
+
+@media (max-height: 732px) {
+  .message {
+    font-size: 27px;
+  }
+}
+
+@media (max-height: 640px) {
+  .message {
+    font-size: 25px;
+  }
+
+  .logocontainer {
+    margin-top: 15px;
+  }
+}
+
+@media (max-height: 480px) {
+  .red {
+    margin-top: 15px;
+    margin-bottom: 15px;
+  }
+
+  .logocontainer {
+    margin-top: 15px;
+    margin-bottom: 15px;
+  }
+}
+
+@media (max-width: 280px) {
+  .message {
+    font-size: 20px;
+  }
+
+  .red {
+    font-size: 15px;
   }
 }
 </style>

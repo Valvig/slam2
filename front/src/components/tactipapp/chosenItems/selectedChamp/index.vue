@@ -63,8 +63,6 @@ export default {
       this.$store.commit("deleteChampWithItem", champion);
     },
     getClassForItemChamp(item) {
-      console.log("item = " + JSON.stringify(item));
-      console.log("this.champion = " + JSON.stringify(this.champion));
       for (let i = 0; i < this.champion.item.length; i++) {
         if (this.champion.item[i].id == item.name) {
           return "itemSelected";

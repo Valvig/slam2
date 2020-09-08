@@ -23,7 +23,6 @@ export default {
   },
   data() {
     return {
-      loading: true,
       bestItems: [],
       items: this.$store.state.itemsList,
       champions: this.$store.state.championsList

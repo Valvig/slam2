@@ -2,6 +2,7 @@
 node_modules
 /dist
 riotApi.json
+sql.json
 
 # local env files
 .env.local

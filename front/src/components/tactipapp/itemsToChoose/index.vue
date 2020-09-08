@@ -4,7 +4,7 @@
       <template v-slot:activator="{ on, attrs }">
         <div class="box" v-bind="attrs" v-on="on">
           <div class="text">
-            <font-awesome-icon class icon="hand-pointer" /> Select item
+            <font-awesome-icon icon="hand-pointer" /> Select item
           </div>
 
           <div class="container">
@@ -196,6 +196,7 @@ $blue: #5c80bc;
 
 .box {
   height: 100%;
+  cursor: default !important;
 }
 
 @media (max-width: 768px) {

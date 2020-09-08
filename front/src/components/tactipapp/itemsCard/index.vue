@@ -8,12 +8,8 @@
     </v-snackbar>
 
     <v-container v-for="(item, index) in possibleItems" :key="item.name + index" fluid>
-      <v-row>
-        <v-tooltip
-          :disabled="getIsEnableTutorial(index)"
-          :top="isTop"
-          :left="!isTop"
-        >
+      <v-row class="row-container">
+        <v-tooltip :disabled="getIsEnableTutorial(index)" :top="isTop" :left="!isTop">
           <template v-slot:activator="{ on, attrs }">
             <div class="box" v-bind="attrs" v-on="on">
               <v-col class="item-col">
@@ -104,7 +100,7 @@
 <script>
 import _ from "lodash";
 import { mapGetters } from "vuex";
-import championCard from "@/components/championCard";
+import championCard from "./championCard";
 
 export default {
   name: "items-card",
@@ -712,15 +708,15 @@ export default {
         return "active";
       }
     },
-    getIsEnableTutorial (index) {
+    getIsEnableTutorial(index) {
       if (index == 0) {
         if (this.$store.state.tutorial == true) {
-          return false
+          return false;
         } else {
-          return true
+          return true;
         }
       } else {
-        return true
+        return true;
       }
     },
   },
@@ -732,6 +728,11 @@ export default {
 </script>
 
 <style style="scss" scoped>
+.row-container,
+.box {
+  cursor: default !important;
+}
+
 .items-card-container {
   opacity: 0;
   height: 0;

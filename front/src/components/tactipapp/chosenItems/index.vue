@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import selectedChamp from "@/components/selectedChamp";
+import selectedChamp from "./selectedChamp";
 
 export default {
   name: "chosen-items",
